@@ -1,4 +1,4 @@
-# Cycle Keys
+# [Cycle Keys](http://raquelxmoss.github.io/cycle-keys)
 ## A Cycle.js driver for keyboard events
 
 This driver for Cycle.js helps you to manage keypress events on the document easily.
@@ -47,6 +47,8 @@ const shift$ = Keys.presses('shift');
 ## Example
 
 In this example, our user will input a search term. When they hit enter, an alert will appear showing the search term they typed in.
+
+[You can try this example out online](http://raquelxmoss.github.io/cycle-keys)
 
 ```es6
 import {run} from '@cycle/core';
