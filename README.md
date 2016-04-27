@@ -1,45 +1,45 @@
 # Cycle Keys
 ## A Cycle.js driver for keyboard events
 
-This driver for Cycle.js helps you to manage keypress events on the documenteasily.
+This driver for Cycle.js helps you to manage keypress events on the document easily.
 
 ## Installation
 
 You can install Cycle Keys with npm
 
 ```bash
-npm install cycle-keys
+$ npm install cycle-keys --save
 ```
 
 ## Usage
 
-1. Install Cycle Keys with npm (see above)
+- Install Cycle Keys with npm (see above)
 
-2. Import the driver
-
-```es6
-    import {makeKeysDriver} from 'cycle-keys';
-```
-
-3. Initialise the driver by calling `makeKeysDriver` in your drivers object
+- Import the driver
 
 ```es6
-    const drivers = {
-      Keys: makeKeysDriver()
-    }
+import {makeKeysDriver} from 'cycle-keys';
 ```
 
-4. Add it to your main function's sources
+- Initialise the driver by calling `makeKeysDriver` in your drivers object
+
+```es6
+const drivers = {
+  Keys: makeKeysDriver()
+}
+```
+
+- Add it to your main function's sources
 
 ```es6
 function main({Keys}) { // Your amazing main function }
 ```
 
-5. Call `Keys.presses` with the name of the key for which you'd like a stream of presses. Currently, Cycle Keys supports inputting keys as strings only
+- Call `Keys.presses` with the name of the key for which you'd like a stream of presses. Currently, Cycle Keys supports inputting keys as strings only
 
 ```es6```
-  const esc$ = Keys.presses('esc');
-  const shift$ = Keys.presses('shift');
+const esc$ = Keys.presses('esc');
+const shift$ = Keys.presses('shift');
 ```
 
 **Note** Cycle Keys relies on [keycode](https://github.com/timoxley/keycode), see their documentation for more information about string aliases for keys.
@@ -72,6 +72,7 @@ function main({DOM, Keys}){
         p('.instructions', 'Write in a search term, then hit enter'),
         input('.search')
       ])
+    )
   }
 }
 
