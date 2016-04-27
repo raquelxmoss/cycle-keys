@@ -1,5 +1,5 @@
 import {Observable} from 'rx';
-import {input} from '@cycle/dom';
+import {div, p, input} from '@cycle/dom';
 
 export default function main({DOM, Keys}){
   const enter$ = Keys.presses('enter');
@@ -14,6 +14,11 @@ export default function main({DOM, Keys}){
     .subscribe(text => alert(text))
 
   return {
-    DOM: Observable.just(input('.search'))
+    DOM: Observable.just(
+      div('.container', [
+        p('.instructions', 'Write in a search term, then hit enter'),
+        input('.search')
+      ])
+    )
   }
 }

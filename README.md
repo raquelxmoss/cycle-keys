@@ -48,9 +48,9 @@ function main({Keys}) { // Your amazing main function }
 
 In this example, our user will input a search term. When they hit enter, an alert will appear showing the search term they typed in.
 
-```js
+```es6
 import {run} from '@cycle/core';
-import {makeDOMDriver, input} from '@cycle/dom';
+import {makeDOMDriver, input, p, div} from '@cycle/dom';
 import {Observable} from 'rx';
 import {makeKeysDriver} from 'cycle-keys';
 
