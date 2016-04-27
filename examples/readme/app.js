@@ -1,10 +1,7 @@
-# cycle-keys
-A Cycle.js driver for keyboard events
-
-```js
+import {Observable} from 'rx';
 import {input} from '@cycle/dom';
 
-function main({DOM, Keys}){
+export default function main({DOM, Keys}){
   const enter$ = Keys.presses('enter');
 
   const inputText$ = DOM
@@ -20,4 +17,3 @@ function main({DOM, Keys}){
     DOM: Observable.just(input('.search'))
   }
 }
-```
