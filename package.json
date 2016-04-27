@@ -12,7 +12,8 @@
     "autotest": "mochify --watch -R min --transform babelify",
     "precompile-lib": "rm -rf lib/ && mkdir -p lib",
     "compile-lib": "babel src -d lib",
-    "prepublish": "npm run compile-lib"
+    "prepublish": "npm run compile-lib",
+    "bundle": "browserify ./examples/readme/index.js -t babelify -o bundle.js"
   },
   "repository": {
     "type": "git",
