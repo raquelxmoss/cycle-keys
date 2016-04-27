@@ -2,11 +2,17 @@
   "name": "cycle-keys",
   "version": "0.0.1",
   "description": "A Cycle.js driver for keyboard events",
-  "main": "index.js",
+  "main": "lib/keys-driver.js",
+  "files": [
+    "lib/"
+  ],
   "scripts": {
     "start": "babel-node ./examples/readme/server.js",
     "test": "mochify --transform babelify",
-    "autotest": "mochify --watch -R min --transform babelify"
+    "autotest": "mochify --watch -R min --transform babelify",
+    "precompile-lib": "rm -rf lib/ && mkdir -p lib",
+    "compile-lib": "babel src -d lib",
+    "prepublish": "npm run compile-lib"
   },
   "repository": {
     "type": "git",
