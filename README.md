@@ -17,13 +17,13 @@ $ npm install cycle-keys --save
 
 - Import the driver
 
-```es6
+```js
 import {makeKeysDriver} from 'cycle-keys';
 ```
 
 - Initialise the driver by calling `makeKeysDriver` in your drivers object
 
-```es6
+```js
 const drivers = {
   Keys: makeKeysDriver()
 }
@@ -31,13 +31,13 @@ const drivers = {
 
 - Add it to your main function's sources
 
-```es6
+```js
 function main({Keys}) { // Your amazing main function }
 ```
 
 - Call `Keys.presses` with the name of the key for which you'd like a stream of presses. Currently, Cycle Keys supports inputting keys as strings only
 
-```es6```
+```js```
 const esc$ = Keys.presses('esc');
 const shift$ = Keys.presses('shift');
 ```
@@ -50,7 +50,7 @@ In this example, our user will input a search term. When they hit enter, an aler
 
 [You can try this example out online](http://raquelxmoss.github.io/cycle-keys)
 
-```es6
+```js
 import {run} from '@cycle/core';
 import {makeDOMDriver, input, p, div} from '@cycle/dom';
 import {Observable} from 'rx';
