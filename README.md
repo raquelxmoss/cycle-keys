@@ -37,7 +37,7 @@ function main({Keys}) { // Your amazing main function }
 
 - Call `Keys.presses` without any arguments to get a stream of all keypresses. You can also call `presses` with the name of a key to only get keypresses for that key. Currently, Cycle Keys supports inputting keys as strings only
 
-```js```
+```js
 const allKeypresses$ = Keys.presses();
 const esc$ = Keys.presses('esc');
 const shift$ = Keys.presses('shift');
