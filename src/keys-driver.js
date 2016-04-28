@@ -5,11 +5,15 @@ export function makeKeysDriver () {
   return function keysDriver() {
     return {
       presses (key) {
-        const code = keycode(key);
+        let keypress$ = Observable.fromEvent(document.body, 'keypress');
 
-        return Observable
-          .fromEvent(document.body, 'keypress')
-          .filter(ev => ev.keyCode === code);
+        if (key) {
+          const code = keycode(key);
+
+          keypress$ = keypress$.filter(event => event.keyCode === code);
+        }
+
+        return keypress$;
       }
     }
   }

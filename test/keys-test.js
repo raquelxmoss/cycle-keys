@@ -5,6 +5,26 @@ import simulant from 'simulant';
 
 describe("makeKeysDriver", () => {
   describe("presses", () => {
+    it("returns a stream of all keypresses", () => {
+      const sources = makeKeysDriver()();
+
+      const keyCodes = [74, 75, 76];
+      let keypressEvents;
+
+      sources.presses().take(3).toArray().subscribe((events) => {
+        keypressEvents = events.map(event => event.keyCode);
+      });
+
+
+      keyCodes.forEach(function (keyCode) {
+        const event = simulant('keypress', {keyCode});
+
+        simulant.fire(document.body, event);
+      });
+
+      assert.deepEqual(keypressEvents, keyCodes, 'keycodes match given keys');
+    });
+
     it("returns a stream of keypress events for the given key", (done) => {
       const sources = makeKeysDriver()();
 
