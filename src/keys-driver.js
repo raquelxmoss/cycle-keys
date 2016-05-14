@@ -3,14 +3,25 @@ import keycode from 'keycode';
 
 export function makeKeysDriver () {
   return function keysDriver() {
-    return {
-      presses (key) {
-        const code = keycode(key);
+    const methods = {};
+    const events = ['keypress', 'keyup', 'keydown'];
 
-        return Observable
-          .fromEvent(document.body, 'keypress')
-          .filter(ev => ev.keyCode === code);
+    events.forEach(event => {
+      const methodName = event.replace('key', '');
+
+      methods[methodName] = (key) => {
+        let event$ = Observable.fromEvent(document.body, event);
+
+        if (key) {
+          const code = keycode(key);
+
+          event$ = event$.filter(event => event.keyCode === code);
+        }
+
+        return event$;
       }
-    }
+    });
+
+    return methods;
   }
 }

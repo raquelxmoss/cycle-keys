@@ -14,7 +14,7 @@ function main(_ref) {
   var DOM = _ref.DOM;
   var Keys = _ref.Keys;
 
-  var enter$ = Keys.presses('enter');
+  var enter$ = Keys.press('enter');
 
   var inputText$ = DOM.select('.search').events('input').map(function (e) {
     return e.target.value;
@@ -16855,15 +16855,30 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function makeKeysDriver() {
   return function keysDriver() {
-    return {
-      presses: function presses(key) {
-        var code = (0, _keycode2.default)(key);
+    var methods = {};
+    var events = ['keypress', 'keyup', 'keydown'];
 
-        return _rx.Observable.fromEvent(document.body, 'keypress').filter(function (ev) {
-          return ev.keyCode === code;
-        });
-      }
-    };
+    events.forEach(function (event) {
+      var methodName = event.replace('key', '');
+
+      methods[methodName] = function (key) {
+        var event$ = _rx.Observable.fromEvent(document.body, event);
+
+        if (key) {
+          (function () {
+            var code = (0, _keycode2.default)(key);
+
+            event$ = event$.filter(function (event) {
+              return event.keyCode === code;
+            });
+          })();
+        }
+
+        return event$;
+      };
+    });
+
+    return methods;
   };
 }
 

@@ -2,7 +2,7 @@ import {Observable} from 'rx';
 import {div, p, input} from '@cycle/dom';
 
 export default function main({DOM, Keys}){
-  const enter$ = Keys.presses('enter');
+  const enter$ = Keys.press('enter');
 
   const inputText$ = DOM
     .select('.search')
