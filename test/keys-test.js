@@ -4,14 +4,14 @@ import assert from 'assert';
 import simulant from 'simulant';
 
 describe("makeKeysDriver", () => {
-  describe("presses", () => {
+  describe("press", () => {
     it("returns a stream of all keypresses", () => {
       const sources = makeKeysDriver()();
 
       const keyCodes = [74, 75, 76];
       let keypressEvents;
 
-      sources.presses().take(3).toArray().subscribe((events) => {
+      sources.press().take(3).toArray().subscribe((events) => {
         keypressEvents = events.map(event => event.keyCode);
       });
 
@@ -28,9 +28,29 @@ describe("makeKeysDriver", () => {
     it("returns a stream of keypress events for the given key", (done) => {
       const sources = makeKeysDriver()();
 
-      sources.presses('enter').take(1).subscribe(() => done());
+      sources.press('enter').take(1).subscribe(() => done());
 
       const event = simulant('keypress', {keyCode: 13});
+
+      simulant.fire(document.body, event);
+    });
+
+    it("returns a stream of keyup events for the given key", (done) => {
+      const sources = makeKeysDriver()();
+
+      sources.up('enter').take(1).subscribe(() => done());
+
+      const event = simulant('keyup', {keyCode: 13});
+
+      simulant.fire(document.body, event);
+    });
+
+    it("returns a stream of keydown events for the given key", (done) => {
+      const sources = makeKeysDriver()();
+
+      sources.down('enter').take(1).subscribe(() => done());
+
+      const event = simulant('keydown', {keyCode: 13});
 
       simulant.fire(document.body, event);
     });
@@ -39,7 +59,7 @@ describe("makeKeysDriver", () => {
       const sources = makeKeysDriver()();
       let enterPressed = false;
 
-      sources.presses('enter').subscribe(() => enterPressed = true);
+      sources.press('enter').subscribe(() => enterPressed = true);
 
       const event = simulant('keypress', {keyCode: 8});
 
