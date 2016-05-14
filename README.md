@@ -1,7 +1,7 @@
 # [Cycle Keys](http://raquelxmoss.github.io/cycle-keys)
 ## A Cycle.js driver for keyboard events
 
-This driver for Cycle.js helps you to manage keypress events on the document easily.
+This driver for Cycle.js helps you to manage key events on the document easily.
 
 ## Installation
 
@@ -32,18 +32,31 @@ const drivers = {
 - Add it to your main function's sources
 
 ```js
-function main({Keys}) { // Your amazing main function }
+function main({Keys}) { /* Your amazing main function */ }
 ```
 
-- Call `Keys.presses` without any arguments to get a stream of all keypresses. You can also call `presses` with the name of a key to only get keypresses for that key. Currently, Cycle Keys supports inputting keys as strings only
-
-```js
-const allKeypresses$ = Keys.presses();
-const esc$ = Keys.presses('esc');
-const shift$ = Keys.presses('shift');
-```
+- Call `Keys.press` (or any of the methods below) without any arguments to get a stream of all keypresses. You can also call `press` with the name of a key to only get keypresses for that key. Currently, Cycle Keys supports inputting keys as strings only
 
 **Note** Cycle Keys relies on [keycode](https://github.com/timoxley/keycode), see their documentation for more information about string aliases for keys.
+
+## Methods
+
+`Keys.down()` - returns a stream of keydown events.
+`Keys.up()` - returns a stream of keyup events.
+`Keys.press()` - returns a stream of keypress events.
+
+All methods take an optional key argument. Calling a method with a key argument will return a stream of key events filtered to that particular key.
+
+```js
+// return a stream of all keypresses
+const allKeypresses$ = Keys.press();
+
+// return a stream of keypresses on the escape key
+const esc$ = Keys.press('esc');
+
+// return a stream of keypresss on the shift key
+const shift$ = Keys.press('shift');
+```
 
 ## Example
 
@@ -58,7 +71,7 @@ import {Observable} from 'rx';
 import {makeKeysDriver} from 'cycle-keys';
 
 function main({DOM, Keys}){
-  const enter$ = Keys.presses('enter');
+  const enter$ = Keys.press('enter');
 
   const inputText$ = DOM
     .select('.search')
