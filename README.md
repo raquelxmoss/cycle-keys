@@ -42,7 +42,9 @@ function main({Keys}) { /* Your amazing main function */ }
 ## Methods
 
 `Keys.down()` - returns a stream of keydown events.
+
 `Keys.up()` - returns a stream of keyup events.
+
 `Keys.press()` - returns a stream of keypress events.
 
 All methods take an optional key argument. Calling a method with a key argument will return a stream of key events filtered to that particular key.
