@@ -1,24 +1,35 @@
 import {Observable} from 'rx';
-import {div, p, input} from '@cycle/dom';
+import {div, p, h1, input} from '@cycle/dom';
+import combineLatestObj from 'rx-combine-latest-obj';
 
 export default function main({DOM, Keys}){
-  const enter$ = Keys.press('enter');
+  const colours = ["#F6F792", "#333745", "#77C4D3", "#DAEDE2", "#EA2E49"];
 
-  const inputText$ = DOM
-    .select('.search')
-    .events('input')
-    .map(e => e.target.value)
+  const isDown$ = Keys.isDown('space')
+    .startWith(false);
 
-  enter$
-    .withLatestFrom(inputText$, (event, text) => text)
-    .subscribe(text => alert(text))
+  const colour$ = Keys.press('enter')
+    .map(ev => +1)
+    .scan((acc, int) => acc + int, 0)
+    .startWith(0)
+    .map(int => colours[int % colours.length]);
+
+  const state$ = combineLatestObj({isDown$, colour$})
 
   return {
-    DOM: Observable.just(
-      div('.container', [
-        p('.instructions', 'Write in a search term, then hit enter'),
-        input('.search')
-      ])
+    DOM: state$.map(state => (
+      div(
+        '.container',
+        {style: {background: state.colour}},
+        [
+          h1(state.isDown ?
+           "Oooh fancy!" :
+           "Hold down the space bar. Go on, I dare you."
+          ),
+          p("For additional fun, hit enter")
+        ]
+      )
     )
+   )
   }
 }

@@ -34,7 +34,8 @@
   "homepage": "https://github.com/raquelxmoss/cycle-keys#readme",
   "dependencies": {
     "keycode": "^2.1.1",
-    "rx": "^4.1.0"
+    "rx": "^4.1.0",
+    "rx-combine-latest-obj": "^1.0.2"
   },
   "devDependencies": {
     "@cycle/core": "^6.0.3",
