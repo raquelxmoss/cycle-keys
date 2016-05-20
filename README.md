@@ -42,7 +42,9 @@ function main({Keys}) { /* Your amazing main function */ }
 ## Methods
 
 `Keys.down()` - returns a stream of keydown events.
+
 `Keys.up()` - returns a stream of keyup events.
+
 `Keys.press()` - returns a stream of keypress events.
 `Keys.isDown(key)` - returns a stream of booleans, `true` if the given key is currently _down_, `false` if the given key is currently _up_. Must be called with a key argument.
 
