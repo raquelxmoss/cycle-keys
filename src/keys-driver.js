@@ -22,6 +22,23 @@ export function makeKeysDriver () {
       }
     });
 
+    methods['isDown'] = (key) => {
+      const code = keycode(key);
+
+      const down$ = Observable.fromEvent(document.body, 'keydown')
+        .filter(ev => ev.keyCode === code)
+        .map(ev => true);
+
+      const up$ = Observable.fromEvent(document.body, 'keyup')
+        .filter(ev => ev.keyCode === code)
+        .map(ev => false);
+
+      return Observable.merge(
+        down$,
+        up$
+      ).startWith(false);
+    }
+
     return methods;
   }
 }

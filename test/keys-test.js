@@ -73,5 +73,24 @@ describe("makeKeysDriver", () => {
 
       assert.equal(enterPressed, true, 'enter has been pressed');
     });
+
+    it("Gives a stream of true/false for key up/down events on a given key", () => {
+      const sources = makeKeysDriver()();
+      let keyIsDown = true;
+
+      sources.isDown('enter').subscribe(() => keyIsDown = !keyIsDown);
+
+      const downEvent = simulant('keydown', {keyCode: 13});
+
+      simulant.fire(document.body, downEvent);
+
+      assert.equal(keyIsDown, true, 'Enter key is down');
+
+      const upEvent = simulant('keyup', {keyCode: 13});
+
+      simulant.fire(document.body, upEvent);
+
+      assert.equal(keyIsDown, false, 'Enter key is up');
+    });
   });
-})
+});

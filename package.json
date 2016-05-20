@@ -1,6 +1,6 @@
 {
   "name": "cycle-keys",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A Cycle.js driver for keyboard events",
   "main": "lib/keys-driver.js",
   "files": [
@@ -34,7 +34,8 @@
   "homepage": "https://github.com/raquelxmoss/cycle-keys#readme",
   "dependencies": {
     "keycode": "^2.1.1",
-    "rx": "^4.1.0"
+    "rx": "^4.1.0",
+    "rx-combine-latest-obj": "^1.0.2"
   },
   "devDependencies": {
     "@cycle/core": "^6.0.3",
