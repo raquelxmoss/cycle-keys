@@ -1,0 +1,26 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+h1 {
+  font-family: "Bad Script", cursive;
+  font-size: 400%;
+  color: #969696;
+}
+
+p {
+  font-family: Helvetica neue, Helvetica, sans-serif;
+  font-size: 200%;
+  color: #969696;
+}
