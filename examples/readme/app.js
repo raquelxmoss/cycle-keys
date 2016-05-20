@@ -1,5 +1,5 @@
 import {Observable} from 'rx';
-import {div, p, h1, input} from '@cycle/dom';
+import {div, p, h1} from '@cycle/dom';
 import combineLatestObj from 'rx-combine-latest-obj';
 
 export default function main({DOM, Keys}){
@@ -14,7 +14,7 @@ export default function main({DOM, Keys}){
     .startWith(0)
     .map(int => colours[int % colours.length]);
 
-  const state$ = combineLatestObj({isDown$, colour$})
+  const state$ = combineLatestObj({isDown$, colour$});
 
   return {
     DOM: state$.map(state => (
@@ -23,8 +23,8 @@ export default function main({DOM, Keys}){
         {style: {background: state.colour}},
         [
           h1(state.isDown ?
-           "Oooh fancy!" :
-           "Hold down the space bar. Go on, I dare you."
+            "Oooh fancy!" :
+            "Hold down the space bar. Go on, I dare you."
           ),
           p("For additional fun, hit enter")
         ]
