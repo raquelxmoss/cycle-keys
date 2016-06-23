@@ -3,6 +3,13 @@ import {makeKeysDriver} from '../src/keys-driver';
 import assert from 'assert';
 import simulant from 'simulant';
 
+const subscribe = listener => stream =>
+  stream.addListener({
+    next:     listener,
+    error:    () => {},
+    complete: () => {}
+  });
+
 describe("makeKeysDriver", () => {
   describe("press", () => {
     it("returns a stream of all keypresses", () => {
@@ -11,9 +18,14 @@ describe("makeKeysDriver", () => {
       const keyCodes = [74, 75, 76];
       let keypressEvents;
 
-      sources.press().take(3).toArray().subscribe((events) => {
-        keypressEvents = events.map(event => event.keyCode);
-      });
+      sources.press().take(3)
+        .fold((x, y) => x.concat(y), [])
+        .last()
+        .compose(
+          subscribe((events) => {
+            keypressEvents = events.map(event => event.keyCode);
+          })
+        );
 
 
       keyCodes.forEach(function (keyCode) {
@@ -28,7 +40,8 @@ describe("makeKeysDriver", () => {
     it("returns a stream of keypress events for the given key", (done) => {
       const sources = makeKeysDriver()();
 
-      sources.press('enter').take(1).subscribe(() => done());
+      sources.press('enter').take(1)
+        .compose(subscribe(() => done()));
 
       const event = simulant('keypress', {keyCode: 13});
 
@@ -38,7 +51,8 @@ describe("makeKeysDriver", () => {
     it("returns a stream of keyup events for the given key", (done) => {
       const sources = makeKeysDriver()();
 
-      sources.up('enter').take(1).subscribe(() => done());
+      sources.up('enter').take(1)
+        .compose(subscribe(() => done()));
 
       const event = simulant('keyup', {keyCode: 13});
 
@@ -48,7 +62,8 @@ describe("makeKeysDriver", () => {
     it("returns a stream of keydown events for the given key", (done) => {
       const sources = makeKeysDriver()();
 
-      sources.down('enter').take(1).subscribe(() => done());
+      sources.down('enter').take(1)
+        .compose(subscribe(() => done()));
 
       const event = simulant('keydown', {keyCode: 13});
 
@@ -59,7 +74,8 @@ describe("makeKeysDriver", () => {
       const sources = makeKeysDriver()();
       let enterPressed = false;
 
-      sources.press('enter').subscribe(() => enterPressed = true);
+      sources.press('enter')
+        .compose(subscribe(() => enterPressed = true));
 
       const event = simulant('keypress', {keyCode: 8});
 
@@ -78,7 +94,8 @@ describe("makeKeysDriver", () => {
       const sources = makeKeysDriver()();
       let keyIsDown = true;
 
-      sources.isDown('enter').subscribe(() => keyIsDown = !keyIsDown);
+      sources.isDown('enter')
+        .compose(subscribe(() => keyIsDown = !keyIsDown));
 
       const downEvent = simulant('keydown', {keyCode: 13});
 
