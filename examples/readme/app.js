@@ -1,20 +1,18 @@
-import {Observable} from 'rx';
+import xs from 'xstream';
 import {div, p, h1} from '@cycle/dom';
-import combineLatestObj from 'rx-combine-latest-obj';
 
 export default function main({DOM, Keys}){
   const colours = ["#F6F792", "#333745", "#77C4D3", "#DAEDE2", "#EA2E49"];
 
   const isDown$ = Keys.isDown('space')
-    .startWith(false);
 
   const colour$ = Keys.press('enter')
     .map(ev => +1)
-    .scan((acc, int) => acc + int, 0)
-    .startWith(0)
-    .map(int => colours[int % colours.length]);
+    .fold((acc, int) => acc + int, 0)
+    .map(int => colours[int % colours.length])
 
-  const state$ = combineLatestObj({isDown$, colour$});
+  const state$ = xs.combine(isDown$, colour$)
+    .map(([isDown, colour]) => ({isDown, colour}))
 
   return {
     DOM: state$.map(state => (

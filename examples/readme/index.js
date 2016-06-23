@@ -1,7 +1,6 @@
-import {run} from '@cycle/core';
+import {run} from '@cycle/xstream-run';
 import {makeKeysDriver} from '../../src/keys-driver';
 import {makeDOMDriver} from '@cycle/dom';
-import {Observable} from 'rx';
 
 var app = require('./app').default;
 
