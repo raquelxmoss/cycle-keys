@@ -1,6 +1,6 @@
 {
   "name": "cycle-keys",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "A Cycle.js driver for keyboard events",
   "main": "lib/keys-driver.js",
   "files": [
