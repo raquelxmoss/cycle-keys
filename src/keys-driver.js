@@ -1,8 +1,10 @@
-import {Observable} from 'rx';
+import xs from 'xstream';
+import fromEvent from 'xstream/extra/fromEvent';
+import xstreamAdapter from '@cycle/xstream-adapter';
 import keycode from 'keycode';
 
 export function makeKeysDriver () {
-  return function keysDriver() {
+  return function keysDriver(sinks, streamAdapter) {
     const methods = {};
     const events = ['keypress', 'keyup', 'keydown'];
 
@@ -10,7 +12,7 @@ export function makeKeysDriver () {
       const methodName = event.replace('key', '');
 
       methods[methodName] = (key) => {
-        let event$ = Observable.fromEvent(document.body, event);
+        let event$ = fromEvent(document.body, event);
 
         if (key) {
           const code = keycode(key);
@@ -18,25 +20,27 @@ export function makeKeysDriver () {
           event$ = event$.filter(event => event.keyCode === code);
         }
 
-        return event$;
+        return streamAdapter.adapt(event$, xstreamAdapter.streamSubscribe);
       }
     });
 
     methods['isDown'] = (key) => {
       const code = keycode(key);
 
-      const down$ = Observable.fromEvent(document.body, 'keydown')
+      const down$ = fromEvent(document.body, 'keydown')
         .filter(ev => ev.keyCode === code)
         .map(ev => true);
 
-      const up$ = Observable.fromEvent(document.body, 'keyup')
+      const up$ = fromEvent(document.body, 'keyup')
         .filter(ev => ev.keyCode === code)
         .map(ev => false);
 
-      return Observable.merge(
+      const isDown$ = xs.merge(
         down$,
         up$
       ).startWith(false);
+
+      return streamAdapter.adapt(isDown$, xstreamAdapter.streamSubscribe);
     }
 
     return methods;

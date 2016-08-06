@@ -3,6 +3,8 @@
 
 This driver for Cycle.js helps you to manage key events on the document easily.
 
+Cycle Keys is stream library agnostic -- you can use it with xstream, rxjs, or any other stream library you like. If you have any issues with a particular library, let me know!
+
 ## Installation
 
 You can install Cycle Keys with npm
@@ -46,6 +48,7 @@ function main({Keys}) { /* Your amazing main function */ }
 `Keys.up()` - returns a stream of keyup events.
 
 `Keys.press()` - returns a stream of keypress events.
+
 `Keys.isDown(key)` - returns a stream of booleans, `true` if the given key is currently _down_, `false` if the given key is currently _up_. Must be called with a key argument.
 
 All methods take a key argument. Calling a method with a key argument will return a stream of key events filtered to that particular key.
@@ -73,23 +76,21 @@ In this example, a user can hit 'enter' to change the background colour. The hea
 ```js
 import {run} from '@cycle/core';
 import {makeDOMDriver, p, h1, div} from '@cycle/dom';
-import {Observable} from 'rx';
 import {makeKeysDriver} from 'cycle-keys';
-import combineLatestObj from 'rx-combine-latest-obj';
+import xs from 'xstream';
 
 function main({DOM, Keys}){
   const colours = ["#F6F792", "#333745", "#77C4D3", "#DAEDE2", "#EA2E49"];
 
-  const isDown$ = Keys.isDown('space')
-    .startWith(false);
+  const isDown$ = Keys.isDown('space');
 
   const colour$ = Keys.press('enter')
     .map(ev => +1)
-    .scan((acc, int) => acc + int, 0)
-    .startWith(0)
+    .fold((acc, int) => acc + int, 0)
     .map(int => colours[int % colours.length]);
 
-  const state$ = combineLatestObj({isDown$, colour$});
+  const state$ = xs.combine(isDown$, colour$)
+    .map(([isDown, colour]) => ({isDown, colour}));
 
   return {
     DOM: state$.map(state => (
@@ -106,7 +107,7 @@ function main({DOM, Keys}){
       )
     )
    )
-  }
+  };
 }
 
 const drivers = {
