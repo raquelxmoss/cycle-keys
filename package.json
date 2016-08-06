@@ -33,11 +33,13 @@
   },
   "homepage": "https://github.com/raquelxmoss/cycle-keys#readme",
   "dependencies": {
+    "@cycle/xstream-adapter": "^3.0.3",
     "keycode": "^2.1.1",
     "xstream": "^5.3.2"
   },
   "devDependencies": {
     "@cycle/dom": "^12.0.3",
+    "@cycle/rx-adapter": "^3.0.0",
     "@cycle/xstream-run": "^3.0.4",
     "babel-cli": "^6.7.7",
     "babel-core": "^6.7.7",

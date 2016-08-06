@@ -1,4 +1,6 @@
 import {makeKeysDriver} from '../src/keys-driver';
+import xstreamAdapter from '@cycle/xstream-adapter';
+import rxAdapter from '@cycle/rx-adapter';
 
 import assert from 'assert';
 import simulant from 'simulant';
@@ -11,9 +13,21 @@ const subscribe = listener => stream =>
   });
 
 describe("makeKeysDriver", () => {
+  describe("keysDriver", () => {
+    it("is stream library agnostic", () =>  {
+      const sources = makeKeysDriver()({}, rxAdapter);
+
+      sources.up('enter').take(1).subscribe(() => done());
+
+      const event = simulant('keyup', {keyCode: 13});
+
+      simulant.fire(document.body, event);
+    });
+  }),
+
   describe("press", () => {
     it("returns a stream of all keypresses", () => {
-      const sources = makeKeysDriver()();
+      const sources = makeKeysDriver()({}, xstreamAdapter);
 
       const keyCodes = [74, 75, 76];
       let keypressEvents;
@@ -38,7 +52,7 @@ describe("makeKeysDriver", () => {
     });
 
     it("returns a stream of keypress events for the given key", (done) => {
-      const sources = makeKeysDriver()();
+      const sources = makeKeysDriver()({}, xstreamAdapter);
 
       sources.press('enter').take(1)
         .compose(subscribe(() => done()));
@@ -49,7 +63,7 @@ describe("makeKeysDriver", () => {
     });
 
     it("returns a stream of keyup events for the given key", (done) => {
-      const sources = makeKeysDriver()();
+      const sources = makeKeysDriver()({}, xstreamAdapter);
 
       sources.up('enter').take(1)
         .compose(subscribe(() => done()));
@@ -60,7 +74,7 @@ describe("makeKeysDriver", () => {
     });
 
     it("returns a stream of keydown events for the given key", (done) => {
-      const sources = makeKeysDriver()();
+      const sources = makeKeysDriver()({}, xstreamAdapter);
 
       sources.down('enter').take(1)
         .compose(subscribe(() => done()));
@@ -71,7 +85,7 @@ describe("makeKeysDriver", () => {
     });
 
     it("emits events only for the given key", () => {
-      const sources = makeKeysDriver()();
+      const sources = makeKeysDriver()({}, xstreamAdapter);
       let enterPressed = false;
 
       sources.press('enter')
@@ -91,7 +105,7 @@ describe("makeKeysDriver", () => {
     });
 
     it("Gives a stream of true/false for key up/down events on a given key", () => {
-      const sources = makeKeysDriver()();
+      const sources = makeKeysDriver()({}, xstreamAdapter);
       let keyIsDown = true;
 
       sources.isDown('enter')
