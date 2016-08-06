@@ -5,7 +5,7 @@ import rxAdapter from '@cycle/rx-adapter';
 import assert from 'assert';
 import simulant from 'simulant';
 
-const subscribe = listener => stream =>
+const xstreamSubscribe = listener => stream =>
   stream.addListener({
     next:     listener,
     error:    () => {},
@@ -36,7 +36,7 @@ describe("makeKeysDriver", () => {
         .fold((x, y) => x.concat(y), [])
         .last()
         .compose(
-          subscribe((events) => {
+          xstreamSubscribe((events) => {
             keypressEvents = events.map(event => event.keyCode);
           })
         );
@@ -55,7 +55,7 @@ describe("makeKeysDriver", () => {
       const sources = makeKeysDriver()({}, xstreamAdapter);
 
       sources.press('enter').take(1)
-        .compose(subscribe(() => done()));
+        .compose(xstreamSubscribe(() => done()));
 
       const event = simulant('keypress', {keyCode: 13});
 
@@ -66,7 +66,7 @@ describe("makeKeysDriver", () => {
       const sources = makeKeysDriver()({}, xstreamAdapter);
 
       sources.up('enter').take(1)
-        .compose(subscribe(() => done()));
+        .compose(xstreamSubscribe(() => done()));
 
       const event = simulant('keyup', {keyCode: 13});
 
@@ -77,7 +77,7 @@ describe("makeKeysDriver", () => {
       const sources = makeKeysDriver()({}, xstreamAdapter);
 
       sources.down('enter').take(1)
-        .compose(subscribe(() => done()));
+        .compose(xstreamSubscribe(() => done()));
 
       const event = simulant('keydown', {keyCode: 13});
 
@@ -89,7 +89,7 @@ describe("makeKeysDriver", () => {
       let enterPressed = false;
 
       sources.press('enter')
-        .compose(subscribe(() => enterPressed = true));
+        .compose(xstreamSubscribe(() => enterPressed = true));
 
       const event = simulant('keypress', {keyCode: 8});
 
@@ -109,7 +109,7 @@ describe("makeKeysDriver", () => {
       let keyIsDown = true;
 
       sources.isDown('enter')
-        .compose(subscribe(() => keyIsDown = !keyIsDown));
+        .compose(xstreamSubscribe(() => keyIsDown = !keyIsDown));
 
       const downEvent = simulant('keydown', {keyCode: 13});
 
