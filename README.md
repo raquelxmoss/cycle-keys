@@ -1,5 +1,6 @@
 # [Cycle Keys](http://raquelxmoss.github.io/cycle-keys)
-## A Cycle.js driver for keyboard events
+## Deprecated!
+[Cycle DOM now supports selecting on `document` and `body`](https://github.com/cyclejs/cyclejs/blob/master/dom/CHANGELOG.md#1210-2016-08-14), so this driver is unnecessary.
 
 This driver for Cycle.js helps you to manage key events on the document easily.
 
